@@ -1,0 +1,29 @@
+.masthead {
+    font-size: 1.5rem;
+    line-height: 1.875rem;
+}
+
+body {
+    font-family: "Freight Text W00";
+    text-indent: 0;
+	text-rendering: optimizeLegibility;
+	-moz-osx-font-smoothing: auto;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.header {
+	font-family: Circular-Bold;
+	font-size: 4.5rem;
+	line-height: 8.5rem;
+	font-weight: 400;
+	color: #272727;
+	text-decoration: none;
+	margin: 0;
+	-webkit-margin-before: 0;
+	-webkit-margin-after: 0;
+	-webkit-margin-start: 0;
+}
+
+#main-content {
+    padding-top: 0.7rem;
+}
