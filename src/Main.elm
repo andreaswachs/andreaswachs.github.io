@@ -2,8 +2,8 @@ module Main exposing (..)
 
 import Browser
 import Json.Decode exposing (..)
-import Html exposing (pre, text, img)
-import Html.Attributes exposing (src)
+import Html exposing (..)
+import Html.Attributes exposing (..)
 import Http
 
 
@@ -41,15 +41,13 @@ subscriptions model = Sub.none
 
 
 -- View : Model -> Html Msg
-type alias CatData = 
-    {
-        file : String
-    }
-
 view model = case model of
                     Failure -> text "I was unable to load the cat image :("
                     Loading -> text "Loading.."
                     Success data -> let imgSrc = decodeString (field "file" string) data
                                     in case imgSrc of 
-                                            Ok url -> pre [] [img [src url] []]
+                                            Ok url -> div [ id "cat-image"] 
+                                              [div [class "masthead"] [text "This is an image of a cat!"]
+                                              , img [src url, id "cat-picture", class "img-fluid"] []
+                                              ]
                                             Err _ -> pre [] [text "Missing image URL!"]
