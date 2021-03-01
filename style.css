@@ -7,9 +7,15 @@
     line-height: 1.875rem;
 }
 
+h1, h2, h3, h4, h5, h6 {
+    line-height: 1.2rem;
+    color:#111;
+}
 body {
     font-family: "Freight Text W00";
     text-indent: 0;
+    color: #454545;
+    line-height: 1.6rem;
 	text-rendering: optimizeLegibility;
 	-moz-osx-font-smoothing: auto;
 	-moz-osx-font-smoothing: grayscale;
@@ -31,3 +37,41 @@ body {
 #main-content {
     padding-top: 0.7rem;
 }
+
+
+#footer {
+	padding-top:1.5rem;
+	border-top: 1px dotted black;
+}
+
+
+/**** Post styling ******/
+
+
+.post {
+	border-left: 3px dotted #7952B3;
+	margin-bottom:20px;
+	margin-top:2rem;
+	padding-left:0.5rem;
+}
+
+.post:not(:last-child) {
+	margin-bottom: 2rem;
+
+}
+
+.post-title {
+	margin-top: 2rem;
+}
+
+
+.post-date {
+	padding-left: 1.2rem;
+}
+.post-body {
+	padding-left: 1.2rem;
+}
+
+
+
+
