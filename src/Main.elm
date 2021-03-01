@@ -90,8 +90,8 @@ postDecoder =
             (field "body" Json.Decode.string)
 
 baseUrl : String
--- baseUrl = "https://andreaswachs.github.io/"
-baseUrl = "http://localhost:8000/"
+baseUrl = "https://andreaswachs.github.io/"
+--baseUrl = "http://localhost:8000/"
 dataDir : String
 dataDir = baseUrl ++ "data/"
 
