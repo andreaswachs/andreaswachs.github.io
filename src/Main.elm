@@ -1,13 +1,25 @@
 module Main exposing (..)
 
 import Browser
-import Json.Decode exposing (..)
 import Html exposing (..)
-import Html.Attributes exposing (..)
+import Html.Attributes exposing (id, class)
 import Http
+import Json.Decode exposing (Decoder, int, list, string, succeed, field, at, map3)
+import Json.Decode.Pipeline exposing (optional, required)
 
+-- type aliases 
+-- content data 
+type alias Post = 
+    { id: Int
+    , date: String
+    , title: String
+    , body: String
+    }
 
--- URL: https://aws.random.cat/meow
+type alias Posts = 
+    { posts: List Post }
+
+main : Program () Model Msg
 main =
     Browser.element
     {
@@ -18,21 +30,24 @@ main =
     }
 
 -- model
-type Model = Failure | Loading | Success String
+type Model = Failure Http.Error | Loading | Success (List Post)
 
 init : () -> (Model, Cmd Msg)
-init _ = (Loading, Http.get { url = "https://aws.random.cat/meow", expect = Http.expectString GotText })
+init _ = (Loading, Http.get { url = contentFile, expect = Http.expectJson GotData postsDecoder })
+--init _ = (Loading, Http.get { url = "https://aws.random.cat/meow", expect = Http.expectString GotData })
+
+
 
 -- Update
-type Msg = GotText (Result Http.Error String)
+type Msg = GotData (Result Http.Error (List Post))
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
     case msg of
-       GotText result ->
+       GotData result ->
         case result of 
             Ok data -> (Success data, Cmd.none)
-            Err _ -> (Failure, Cmd.none)
+            Err errMsg -> (Failure errMsg, Cmd.none)
 
 
 -- Subscriptions
@@ -40,14 +55,53 @@ subscriptions : Model -> Sub Msg
 subscriptions model = Sub.none
 
 
+
 -- View : Model -> Html Msg
 view model = case model of
-                    Failure -> text "I was unable to load the cat image :("
+                    Failure msg -> case msg of
+                        Http.BadUrl str -> text <| "Bad url: " ++ str
+                        Http.BadStatus _ -> text "bad statuxs"
+                        Http.Timeout -> text "time out!"
+                        Http.BadBody errMsg -> text <| "bad body" ++ errMsg
+                        _ -> text "it was something else!"
+    
+
                     Loading -> text "Loading.."
-                    Success data -> let imgSrc = decodeString (field "file" string) data
-                                    in case imgSrc of 
-                                            Ok url -> div [ id "cat-image"] 
-                                              [div [class "masthead"] [text "This is an image of a cat!"]
-                                              , img [src url, id "cat-picture", class "img-fluid"] []
-                                              ]
-                                            Err _ -> pre [] [text "Missing image URL!"]
+                    Success data -> 
+                        div [] (List.map printPost data)
+
+
+printPost : Post -> Html Msg
+printPost post = 
+    div [ class "post" ] 
+        [ div [ class "post-title" ] [ h2 [] [ text post.title ] ]
+        , div [ class "small post-date" ] [ span [] [ text <| "Posted on: " ++ post.date]]
+        , div [ class "post-body"] [ p [ class "fs-5 lh-base"] [text post.body ]]
+        ]
+
+postsDecoder = 
+    list postDecoder
+postDecoder =
+    Json.Decode.map4
+        Post
+            (field "id" Json.Decode.int)
+            (field "date" Json.Decode.string)
+            (field "title" Json.Decode.string)
+            (field "body" Json.Decode.string)
+
+baseUrl : String
+-- baseUrl = "https://andreaswachs.github.io/"
+baseUrl = "http://localhost:8000/"
+dataDir : String
+dataDir = baseUrl ++ "data/"
+
+contentFile : String
+contentFile = dataDir ++ "content.json"
+
+
+
+
+
+
+
+

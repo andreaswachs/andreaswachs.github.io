@@ -5319,10 +5319,14 @@ var $elm$core$Task$perform = F2(
 				A2($elm$core$Task$map, toMessage, task)));
 	});
 var $elm$browser$Browser$element = _Browser_element;
-var $author$project$Main$GotText = function (a) {
-	return {$: 'GotText', a: a};
+var $author$project$Main$GotData = function (a) {
+	return {$: 'GotData', a: a};
 };
 var $author$project$Main$Loading = {$: 'Loading'};
+var $author$project$Main$baseUrl = 'http://localhost:8000/';
+var $author$project$Main$dataDir = $author$project$Main$baseUrl + 'data/';
+var $author$project$Main$contentFile = $author$project$Main$dataDir + 'content.json';
+var $elm$json$Json$Decode$decodeString = _Json_runOnString;
 var $elm$http$Http$BadStatus_ = F2(
 	function (a, b) {
 		return {$: 'BadStatus_', a: a, b: b};
@@ -5878,17 +5882,6 @@ var $elm$http$Http$expectStringResponse = F2(
 			$elm$core$Basics$identity,
 			A2($elm$core$Basics$composeR, toResult, toMsg));
 	});
-var $elm$http$Http$BadBody = function (a) {
-	return {$: 'BadBody', a: a};
-};
-var $elm$http$Http$BadStatus = function (a) {
-	return {$: 'BadStatus', a: a};
-};
-var $elm$http$Http$BadUrl = function (a) {
-	return {$: 'BadUrl', a: a};
-};
-var $elm$http$Http$NetworkError = {$: 'NetworkError'};
-var $elm$http$Http$Timeout = {$: 'Timeout'};
 var $elm$core$Result$mapError = F2(
 	function (f, result) {
 		if (result.$ === 'Ok') {
@@ -5900,6 +5893,17 @@ var $elm$core$Result$mapError = F2(
 				f(e));
 		}
 	});
+var $elm$http$Http$BadBody = function (a) {
+	return {$: 'BadBody', a: a};
+};
+var $elm$http$Http$BadStatus = function (a) {
+	return {$: 'BadStatus', a: a};
+};
+var $elm$http$Http$BadUrl = function (a) {
+	return {$: 'BadUrl', a: a};
+};
+var $elm$http$Http$NetworkError = {$: 'NetworkError'};
+var $elm$http$Http$Timeout = {$: 'Timeout'};
 var $elm$http$Http$resolve = F2(
 	function (toResult, response) {
 		switch (response.$) {
@@ -5923,12 +5927,19 @@ var $elm$http$Http$resolve = F2(
 					toResult(body));
 		}
 	});
-var $elm$http$Http$expectString = function (toMsg) {
-	return A2(
-		$elm$http$Http$expectStringResponse,
-		toMsg,
-		$elm$http$Http$resolve($elm$core$Result$Ok));
-};
+var $elm$http$Http$expectJson = F2(
+	function (toMsg, decoder) {
+		return A2(
+			$elm$http$Http$expectStringResponse,
+			toMsg,
+			$elm$http$Http$resolve(
+				function (string) {
+					return A2(
+						$elm$core$Result$mapError,
+						$elm$json$Json$Decode$errorToString,
+						A2($elm$json$Json$Decode$decodeString, decoder, string));
+				}));
+	});
 var $elm$http$Http$emptyBody = _Http_emptyBody;
 var $elm$http$Http$Request = function (a) {
 	return {$: 'Request', a: a};
@@ -6102,13 +6113,30 @@ var $elm$http$Http$get = function (r) {
 	return $elm$http$Http$request(
 		{body: $elm$http$Http$emptyBody, expect: r.expect, headers: _List_Nil, method: 'GET', timeout: $elm$core$Maybe$Nothing, tracker: $elm$core$Maybe$Nothing, url: r.url});
 };
+var $elm$json$Json$Decode$list = _Json_decodeList;
+var $author$project$Main$Post = F4(
+	function (id, date, title, body) {
+		return {body: body, date: date, id: id, title: title};
+	});
+var $elm$json$Json$Decode$field = _Json_decodeField;
+var $elm$json$Json$Decode$int = _Json_decodeInt;
+var $elm$json$Json$Decode$map4 = _Json_map4;
+var $elm$json$Json$Decode$string = _Json_decodeString;
+var $author$project$Main$postDecoder = A5(
+	$elm$json$Json$Decode$map4,
+	$author$project$Main$Post,
+	A2($elm$json$Json$Decode$field, 'id', $elm$json$Json$Decode$int),
+	A2($elm$json$Json$Decode$field, 'date', $elm$json$Json$Decode$string),
+	A2($elm$json$Json$Decode$field, 'title', $elm$json$Json$Decode$string),
+	A2($elm$json$Json$Decode$field, 'body', $elm$json$Json$Decode$string));
+var $author$project$Main$postsDecoder = $elm$json$Json$Decode$list($author$project$Main$postDecoder);
 var $author$project$Main$init = function (_v0) {
 	return _Utils_Tuple2(
 		$author$project$Main$Loading,
 		$elm$http$Http$get(
 			{
-				expect: $elm$http$Http$expectString($author$project$Main$GotText),
-				url: 'https://aws.random.cat/meow'
+				expect: A2($elm$http$Http$expectJson, $author$project$Main$GotData, $author$project$Main$postsDecoder),
+				url: $author$project$Main$contentFile
 			}));
 };
 var $elm$core$Platform$Sub$batch = _Platform_batch;
@@ -6116,7 +6144,9 @@ var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
 var $author$project$Main$subscriptions = function (model) {
 	return $elm$core$Platform$Sub$none;
 };
-var $author$project$Main$Failure = {$: 'Failure'};
+var $author$project$Main$Failure = function (a) {
+	return {$: 'Failure', a: a};
+};
 var $author$project$Main$Success = function (a) {
 	return {$: 'Success', a: a};
 };
@@ -6131,9 +6161,13 @@ var $author$project$Main$update = F2(
 				$author$project$Main$Success(data),
 				$elm$core$Platform$Cmd$none);
 		} else {
-			return _Utils_Tuple2($author$project$Main$Failure, $elm$core$Platform$Cmd$none);
+			var errMsg = result.a;
+			return _Utils_Tuple2(
+				$author$project$Main$Failure(errMsg),
+				$elm$core$Platform$Cmd$none);
 		}
 	});
+var $elm$html$Html$div = _VirtualDom_node('div');
 var $elm$json$Json$Encode$string = _Json_wrap;
 var $elm$html$Html$Attributes$stringProperty = F2(
 	function (key, string) {
@@ -6143,72 +6177,99 @@ var $elm$html$Html$Attributes$stringProperty = F2(
 			$elm$json$Json$Encode$string(string));
 	});
 var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
-var $elm$json$Json$Decode$decodeString = _Json_runOnString;
-var $elm$html$Html$div = _VirtualDom_node('div');
-var $elm$json$Json$Decode$field = _Json_decodeField;
-var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
-var $elm$html$Html$img = _VirtualDom_node('img');
-var $elm$html$Html$pre = _VirtualDom_node('pre');
-var $elm$html$Html$Attributes$src = function (url) {
-	return A2(
-		$elm$html$Html$Attributes$stringProperty,
-		'src',
-		_VirtualDom_noJavaScriptOrHtmlUri(url));
-};
-var $elm$json$Json$Decode$string = _Json_decodeString;
+var $elm$html$Html$h2 = _VirtualDom_node('h2');
+var $elm$html$Html$p = _VirtualDom_node('p');
+var $elm$html$Html$span = _VirtualDom_node('span');
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
+var $author$project$Main$printPost = function (post) {
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('post')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('post-title')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$h2,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text(post.title)
+							]))
+					])),
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('small post-date')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$span,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Posted on: ' + post.date)
+							]))
+					])),
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('post-body')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$p,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('fs-5 lh-base')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text(post.body)
+							]))
+					]))
+			]));
+};
 var $author$project$Main$view = function (model) {
 	switch (model.$) {
 		case 'Failure':
-			return $elm$html$Html$text('I was unable to load the cat image :(');
+			var msg = model.a;
+			switch (msg.$) {
+				case 'BadUrl':
+					var str = msg.a;
+					return $elm$html$Html$text('Bad url: ' + str);
+				case 'BadStatus':
+					return $elm$html$Html$text('bad statuxs');
+				case 'Timeout':
+					return $elm$html$Html$text('time out!');
+				case 'BadBody':
+					var errMsg = msg.a;
+					return $elm$html$Html$text('bad body' + errMsg);
+				default:
+					return $elm$html$Html$text('it was something else!');
+			}
 		case 'Loading':
 			return $elm$html$Html$text('Loading..');
 		default:
 			var data = model.a;
-			var imgSrc = A2(
-				$elm$json$Json$Decode$decodeString,
-				A2($elm$json$Json$Decode$field, 'file', $elm$json$Json$Decode$string),
-				data);
-			if (imgSrc.$ === 'Ok') {
-				var url = imgSrc.a;
-				return A2(
-					$elm$html$Html$div,
-					_List_fromArray(
-						[
-							$elm$html$Html$Attributes$id('cat-image')
-						]),
-					_List_fromArray(
-						[
-							A2(
-							$elm$html$Html$div,
-							_List_fromArray(
-								[
-									$elm$html$Html$Attributes$class('masthead')
-								]),
-							_List_fromArray(
-								[
-									$elm$html$Html$text('This is an image of a cat!')
-								])),
-							A2(
-							$elm$html$Html$img,
-							_List_fromArray(
-								[
-									$elm$html$Html$Attributes$src(url),
-									$elm$html$Html$Attributes$id('cat-picture'),
-									$elm$html$Html$Attributes$class('img-fluid')
-								]),
-							_List_Nil)
-						]));
-			} else {
-				return A2(
-					$elm$html$Html$pre,
-					_List_Nil,
-					_List_fromArray(
-						[
-							$elm$html$Html$text('Missing image URL!')
-						]));
-			}
+			return A2(
+				$elm$html$Html$div,
+				_List_Nil,
+				A2($elm$core$List$map, $author$project$Main$printPost, data));
 	}
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
