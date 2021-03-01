@@ -1,0 +1,13 @@
+{
+    "posts": [
+        { "id": 1
+        , "title": "dummy title"
+        , "body": "dummy body"
+        },
+
+        { "id": 2
+        , "title": "dummy title2"
+        , "body": "dummy body2"
+        }
+    ]
+}
