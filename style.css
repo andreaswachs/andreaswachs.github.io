@@ -40,7 +40,7 @@ body {
 
 
 #header {
-	background-image: url(data/images/pexels-chait-goli-cropped.jpg);
+	background-image: url(/data/images/pexels-chait-goli-cropped.jpg);
 	background-size:cover;
 	min-height: 200px;
 }
