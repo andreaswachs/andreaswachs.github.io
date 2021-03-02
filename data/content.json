@@ -2,6 +2,6 @@
     { "id": 1
     , "date" : "2020-03-01"
     , "title": "Working on my personal website"
-    , "body": "Hello! Welcome to my personal website. This is very exiting as I developing this whilst learning Elm; learning and developing side by side!"
+    , "body": "Hello! Welcome to my personal website. This is very exiting as I developing this whilst learning Elm; learning and developing side by side! \n\ncrazy math time: $$\\int_{-\\infty}^\\infty e^{-x^2} dx = \\pi$$"
     }
 ]
