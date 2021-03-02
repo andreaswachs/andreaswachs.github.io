@@ -1,4 +1,4 @@
-module Main exposing (..)
+module Main exposing (main)
 
 import Browser
 import Html exposing (..)
@@ -6,6 +6,8 @@ import Html.Attributes exposing (id, class)
 import Http
 import Json.Decode exposing (Decoder, int, list, string, succeed, field, at, map3)
 import Json.Decode.Pipeline exposing (optional, required)
+import Markdown.Option exposing (..)
+import Markdown.Render exposing (MarkdownMsg(..), MarkdownOutput(..))
 
 -- type aliases 
 -- content data 
@@ -39,15 +41,19 @@ init _ = (Loading, Http.get { url = contentFile, expect = Http.expectJson GotDat
 
 
 -- Update
-type Msg = GotData (Result Http.Error (List Post))
+type Msg =
+    GotData (Result Http.Error (List Post))
+    | MarkdownMsg Markdown.Render.MarkdownMsg
+
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
     case msg of
        GotData result ->
-        case result of 
-            Ok data -> (Success data, Cmd.none)
-            Err errMsg -> (Failure errMsg, Cmd.none)
+            case result of 
+                Ok data -> (Success data, Cmd.none)
+                Err errMsg -> (Failure errMsg, Cmd.none)
+       MarkdownMsg _ -> (model, Cmd.none)
 
 
 -- Subscriptions
@@ -74,11 +80,15 @@ view model = case model of
 printPost : Post -> Html Msg
 printPost post = 
     div [ class "post" ] 
-        [ div [ class "post-title" ] [ h2 [] [ text post.title ] ]
-        , div [ class "small post-date" ] [ span [] [ text <| "Posted on: " ++ post.date]]
-        , div [ class "post-body"] [ p [ class "fs-5 lh-base"] [text post.body ]]
-        ]
-
+        [ div [ class "post-title" ] 
+              [ h2 [] [ text post.title ] ]
+        , div [ class "small post-date" ] 
+              [ span [] [ text <| "Posted on: " ++ post.date]]
+        , div [ class "post-body"] [ 
+                p [ class "fs-5 lh-base"] 
+                    [ Markdown.Render.toHtml ExtendedMath post.body |> 
+                                    Html.map MarkdownMsg ]]]
+ 
 postsDecoder = 
     list postDecoder
 postDecoder =
