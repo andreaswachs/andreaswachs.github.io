@@ -39,11 +39,20 @@ body {
 }
 
 
+#header {
+	background-image: url(data/images/pexels-chait-goli-cropped.jpg);
+	background-size:cover;
+	min-height: 200px;
+}
+
 #footer {
 	padding-top:1.5rem;
 	border-top: 1px dotted black;
 }
 
+#page-title {
+	padding-top:1.3rem;
+}
 
 /**** Post styling ******/
 
