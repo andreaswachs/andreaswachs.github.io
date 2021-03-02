@@ -21,3 +21,8 @@ I want to implement the following:
 - Keep a JSON file on hand to tell the application which posts to show
 - The app now reads the JSON file and loads the different `html` files into the webpage
 
+**Development so far**
+* Markdown parser is implemented
+* The markdown parser now parses the body of each post from the JSON file.
+* We can now skip the step of converting `.md` files into `.html` files. I can now publish `.md` files and have them parsed.
+* Going forward, the JSON file should hold a link to a given `.md` file, which represents one post and the JSON file should hold its date published and...?
