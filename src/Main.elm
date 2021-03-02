@@ -4,8 +4,7 @@ import Browser
 import Html exposing (..)
 import Html.Attributes exposing (id, class)
 import Http
-import Json.Decode exposing (Decoder, int, list, string, succeed, field, at, map3)
-import Json.Decode.Pipeline exposing (optional, required)
+import Json.Decode exposing (list, field)
 import Markdown.Option exposing (..)
 import Markdown.Render exposing (MarkdownMsg(..), MarkdownOutput(..))
 
