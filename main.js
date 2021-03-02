@@ -5323,7 +5323,7 @@ var $author$project$Main$GotData = function (a) {
 	return {$: 'GotData', a: a};
 };
 var $author$project$Main$Loading = {$: 'Loading'};
-var $author$project$Main$baseUrl = 'https://andreaswachs.github.io/';
+var $author$project$Main$baseUrl = './';
 var $author$project$Main$dataDir = $author$project$Main$baseUrl + 'data/';
 var $author$project$Main$contentFile = $author$project$Main$dataDir + 'content.json';
 var $elm$json$Json$Decode$decodeString = _Json_runOnString;
