@@ -35,7 +35,6 @@ type Model = Failure Http.Error | Loading | Success (List Post)
 
 init : () -> (Model, Cmd Msg)
 init _ = (Loading, Http.get { url = contentFile, expect = Http.expectJson GotData postsDecoder })
---init _ = (Loading, Http.get { url = "https://aws.random.cat/meow", expect = Http.expectString GotData })
 
 
 
@@ -63,15 +62,12 @@ subscriptions model = Sub.none
 
 -- View : Model -> Html Msg
 view model = case model of
-                    Failure msg -> case msg of
-                        Http.BadUrl str -> text <| "Bad url: " ++ str
-                        Http.BadStatus _ -> text "bad statuxs"
-                        Http.Timeout -> text "time out!"
-                        Http.BadBody errMsg -> text <| "bad body" ++ errMsg
-                        _ -> text "it was something else!"
-    
-
-                    Loading -> text "Loading.."
+                    Failure msg -> 
+                        handleJsonError msg
+                   
+                    Loading -> 
+                        text "Loading.."
+                   
                     Success data -> 
                         div [] (List.map printPost data)
 
@@ -106,6 +102,16 @@ dataDir = baseUrl ++ "data/"
 
 contentFile : String
 contentFile = dataDir ++ "content.json"
+
+
+handleJsonError : Http.Error -> Html msg
+handleJsonError msg = case msg of
+                        Http.BadUrl str -> text <| "The URL for the JSON file was 'bad'. Error message: " ++ str
+                        Http.BadStatus errCode -> text <| "The server containing the JSON file returned a bad status code. Status code: " ++ String.fromInt errCode
+                        Http.Timeout -> text "The request for the JSON file reached timeout!"
+                        Http.BadBody errMsg -> text <| "The server containing the JSON file complained about a bad request body. Error message: " ++ errMsg
+                        _ -> text "There was an unchecked error while loading the JSON file. No error message is possible at the moment."
+ 
 
 
 

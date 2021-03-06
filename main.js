@@ -6434,6 +6434,26 @@ var $author$project$Main$update = F2(
 		}
 	});
 var $elm$html$Html$div = _VirtualDom_node('div');
+var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
+var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
+var $author$project$Main$handleJsonError = function (msg) {
+	switch (msg.$) {
+		case 0:
+			var str = msg.a;
+			return $elm$html$Html$text('The URL for the JSON file was \'bad\'. Error message: ' + str);
+		case 3:
+			var errCode = msg.a;
+			return $elm$html$Html$text(
+				'The server containing the JSON file returned a bad status code. Status code: ' + $elm$core$String$fromInt(errCode));
+		case 1:
+			return $elm$html$Html$text('The request for the JSON file reached timeout!');
+		case 4:
+			var errMsg = msg.a;
+			return $elm$html$Html$text('The server containing the JSON file complained about a bad request body. Error message: ' + errMsg);
+		default:
+			return $elm$html$Html$text('There was an unchecked error while loading the JSON file. No error message is possible at the moment.');
+	}
+};
 var $jxxcarlson$elm_markdown$Markdown$Option$ExtendedMath = 2;
 var $author$project$Main$MarkdownMsg = function (a) {
 	return {$: 1, a: a};
@@ -6452,8 +6472,6 @@ var $elm$virtual_dom$VirtualDom$map = _VirtualDom_map;
 var $elm$html$Html$map = $elm$virtual_dom$VirtualDom$map;
 var $elm$html$Html$p = _VirtualDom_node('p');
 var $elm$html$Html$span = _VirtualDom_node('span');
-var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
-var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
 var $zwilias$elm_rosetree$Tree$children = function (_v0) {
 	var c = _v0.b;
 	return c;
@@ -18692,20 +18710,7 @@ var $author$project$Main$view = function (model) {
 	switch (model.$) {
 		case 0:
 			var msg = model.a;
-			switch (msg.$) {
-				case 0:
-					var str = msg.a;
-					return $elm$html$Html$text('Bad url: ' + str);
-				case 3:
-					return $elm$html$Html$text('bad statuxs');
-				case 1:
-					return $elm$html$Html$text('time out!');
-				case 4:
-					var errMsg = msg.a;
-					return $elm$html$Html$text('bad body' + errMsg);
-				default:
-					return $elm$html$Html$text('it was something else!');
-			}
+			return $author$project$Main$handleJsonError(msg);
 		case 1:
 			return $elm$html$Html$text('Loading..');
 		default:
