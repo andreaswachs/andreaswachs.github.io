@@ -6440,6 +6440,39 @@ var $author$project$Main$update = F2(
 					$author$project$Main$sendMessage(''));
 		}
 	});
+var $elm$html$Html$Attributes$stringProperty = F2(
+	function (key, string) {
+		return A2(
+			_VirtualDom_property,
+			key,
+			$elm$json$Json$Encode$string(string));
+	});
+var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
+var $elm$core$List$filter = F2(
+	function (isGood, list) {
+		return A3(
+			$elm$core$List$foldr,
+			F2(
+				function (x, xs) {
+					return isGood(x) ? A2($elm$core$List$cons, x, xs) : xs;
+				}),
+			_List_Nil,
+			list);
+	});
+var $elm$core$Tuple$second = function (_v0) {
+	var y = _v0.b;
+	return y;
+};
+var $elm$html$Html$Attributes$classList = function (classes) {
+	return $elm$html$Html$Attributes$class(
+		A2(
+			$elm$core$String$join,
+			' ',
+			A2(
+				$elm$core$List$map,
+				$elm$core$Tuple$first,
+				A2($elm$core$List$filter, $elm$core$Tuple$second, classes))));
+};
 var $elm$html$Html$div = _VirtualDom_node('div');
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
@@ -6465,14 +6498,6 @@ var $jxxcarlson$elm_markdown$Markdown$Option$Extended = 1;
 var $author$project$Main$MarkdownMsg = function (a) {
 	return {$: 1, a: a};
 };
-var $elm$html$Html$Attributes$stringProperty = F2(
-	function (key, string) {
-		return A2(
-			_VirtualDom_property,
-			key,
-			$elm$json$Json$Encode$string(string));
-	});
-var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
 var $elm$html$Html$h2 = _VirtualDom_node('h2');
 var $elm$virtual_dom$VirtualDom$map = _VirtualDom_map;
 var $elm$html$Html$map = $elm$virtual_dom$VirtualDom$map;
@@ -6780,10 +6805,6 @@ var $elm$core$List$intersperse = F2(
 			return A2($elm$core$List$cons, hd, spersed);
 		}
 	});
-var $elm$core$Tuple$second = function (_v0) {
-	var y = _v0.b;
-	return y;
-};
 var $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$Style$Style1 = 2;
 var $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$Style$Style2 = 3;
 var $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$Style$Style3 = 4;
@@ -15648,27 +15669,6 @@ var $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$Line$Add = 1;
 var $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$Line$Del = 2;
 var $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$Line$Normal = 0;
 var $elm$html$Html$Attributes$attribute = $elm$virtual_dom$VirtualDom$attribute;
-var $elm$core$List$filter = F2(
-	function (isGood, list) {
-		return A3(
-			$elm$core$List$foldr,
-			F2(
-				function (x, xs) {
-					return isGood(x) ? A2($elm$core$List$cons, x, xs) : xs;
-				}),
-			_List_Nil,
-			list);
-	});
-var $elm$html$Html$Attributes$classList = function (classes) {
-	return $elm$html$Html$Attributes$class(
-		A2(
-			$elm$core$String$join,
-			' ',
-			A2(
-				$elm$core$List$map,
-				$elm$core$Tuple$first,
-				A2($elm$core$List$filter, $elm$core$Tuple$second, classes))));
-};
 var $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$View$requiredStyleToString = function (required) {
 	return 'elmsh' + function () {
 		switch (required) {
@@ -18712,13 +18712,45 @@ var $author$project$Main$printPost = function (post) {
 					]))
 			]));
 };
+var $fapian$elm_html_aria$Html$Attributes$Aria$role = $elm$html$Html$Attributes$attribute('role');
 var $author$project$Main$view = function (model) {
 	switch (model.$) {
 		case 0:
 			var msg = model.a;
 			return $author$project$Main$handleJsonError(msg);
 		case 1:
-			return $elm$html$Html$text('Loading..');
+			return A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$classList(
+						_List_fromArray(
+							[
+								_Utils_Tuple2('d-flex', true),
+								_Utils_Tuple2('justify-content-center', true),
+								_Utils_Tuple2('spinner-box', true)
+							]))
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('spinner-border'),
+								$fapian$elm_html_aria$Html$Attributes$Aria$role('status')
+							]),
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$span,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('sr-only')
+									]),
+								_List_Nil)
+							]))
+					]));
 		default:
 			var data = model.a;
 			return A2(

@@ -2,7 +2,7 @@ port module Main exposing (main)
 
 import Browser
 import Html exposing (..)
-import Html.Attributes exposing (class, property)
+import Html.Attributes exposing (class, property, classList)
 import Http
 import Json.Decode exposing (list, field, string)
 import Markdown.Option exposing (..)
@@ -10,6 +10,7 @@ import Markdown.Render exposing (MarkdownMsg(..), MarkdownOutput(..))
 import Html.Attributes exposing (attribute)
 import Html.Events exposing (on)
 import Html.Events exposing (onClick)
+import Html.Attributes.Aria
 
 -- type aliases 
 -- content data 
@@ -70,7 +71,12 @@ view model = case model of
                         handleJsonError msg
                    
                     Loading -> 
-                        text "Loading.."
+                        div [ classList [ ("d-flex", True)
+                                        , ("justify-content-center", True)
+                                        , ("spinner-box", True)]]
+                            [div [ class "spinner-border"
+                                 , Html.Attributes.Aria.role "status"]
+                                    [span [ class "sr-only"] [ ]]]
                    
                     Success data -> 
                             div [] 
