@@ -1858,8 +1858,8 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 		flagDecoder,
 		args,
 		impl.cz,
-		impl.cT,
-		impl.cR,
+		impl.cS,
+		impl.cQ,
 		function() { return function() {} }
 	);
 });
@@ -3929,10 +3929,10 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 		flagDecoder,
 		args,
 		impl.cz,
-		impl.cT,
-		impl.cR,
+		impl.cS,
+		impl.cQ,
 		function(sendToApp, initialModel) {
-			var view = impl.cV;
+			var view = impl.cU;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3965,11 +3965,11 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 		flagDecoder,
 		args,
 		impl.cz,
-		impl.cT,
-		impl.cR,
+		impl.cS,
+		impl.cQ,
 		function(sendToApp, initialModel) {
 			var divertHrefToApp = impl.bb && impl.bb(sendToApp)
-			var view = impl.cV;
+			var view = impl.cU;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -4073,9 +4073,9 @@ function _Browser_application(impl)
 		{
 			return A3(impl.cz, flags, _Browser_getUrl(), key);
 		},
-		cV: impl.cV,
-		cT: impl.cT,
-		cR: impl.cR
+		cU: impl.cU,
+		cS: impl.cS,
+		cQ: impl.cQ
 	});
 }
 
@@ -4375,9 +4375,9 @@ var _Http_toTask = F3(function(router, toTask, request)
 		$elm$core$Maybe$isJust(request.ca) && _Http_track(router, xhr, request.ca.a);
 
 		try {
-			xhr.open(request.cD, request.cU, true);
+			xhr.open(request.cD, request.cT, true);
 		} catch (e) {
-			return done($elm$http$Http$BadUrl_(request.cU));
+			return done($elm$http$Http$BadUrl_(request.cT));
 		}
 
 		_Http_configureRequest(xhr, request);
@@ -4398,7 +4398,7 @@ function _Http_configureRequest(xhr, request)
 	{
 		xhr.setRequestHeader(headers.a.a, headers.a.b);
 	}
-	xhr.timeout = request.cS.a || 0;
+	xhr.timeout = request.cR.a || 0;
 	xhr.responseType = request.cr.d;
 	xhr.withCredentials = request.ck;
 }
@@ -4421,9 +4421,9 @@ function _Http_toResponse(toBody, xhr)
 function _Http_toMetadata(xhr)
 {
 	return {
-		cU: xhr.responseURL,
-		cP: xhr.status,
-		cQ: xhr.statusText,
+		cT: xhr.responseURL,
+		cO: xhr.status,
+		cP: xhr.statusText,
 		cu: _Http_parseHeaders(xhr.getAllResponseHeaders())
 	};
 }
@@ -4519,14 +4519,14 @@ function _Http_track(router, xhr, tracker)
 	xhr.upload.addEventListener('progress', function(event) {
 		if (xhr.c) { return; }
 		_Scheduler_rawSpawn(A2($elm$core$Platform$sendToSelf, router, _Utils_Tuple2(tracker, $elm$http$Http$Sending({
-			cN: event.loaded,
+			cM: event.loaded,
 			b2: event.total
 		}))));
 	});
 	xhr.addEventListener('progress', function(event) {
 		if (xhr.c) { return; }
 		_Scheduler_rawSpawn(A2($elm$core$Platform$sendToSelf, router, _Utils_Tuple2(tracker, $elm$http$Http$Receiving({
-			cJ: event.loaded,
+			cI: event.loaded,
 			b2: event.lengthComputable ? $elm$core$Maybe$Just(event.total) : $elm$core$Maybe$Nothing
 		}))));
 	});
@@ -5586,7 +5586,7 @@ var $author$project$Main$GotData = function (a) {
 };
 var $author$project$Main$Loading = {$: 1};
 var $author$project$Main$baseUrl = './';
-var $author$project$Main$dataDir = $author$project$Main$baseUrl + 'data/';
+var $author$project$Main$dataDir = $author$project$Main$baseUrl + 'assets/data/';
 var $author$project$Main$contentFile = $author$project$Main$dataDir + 'content.json';
 var $elm$json$Json$Decode$decodeString = _Json_runOnString;
 var $elm$http$Http$BadStatus_ = F2(
@@ -6180,7 +6180,7 @@ var $elm$http$Http$resolve = F2(
 			case 3:
 				var metadata = response.a;
 				return $elm$core$Result$Err(
-					$elm$http$Http$BadStatus(metadata.cP));
+					$elm$http$Http$BadStatus(metadata.cO));
 			default:
 				var body = response.b;
 				return A2(
@@ -6344,9 +6344,9 @@ var $elm$http$Http$cmdMap = F2(
 					cr: A2(_Http_mapExpect, func, r.cr),
 					cu: r.cu,
 					cD: r.cD,
-					cS: r.cS,
+					cR: r.cR,
 					ca: r.ca,
-					cU: r.cU
+					cT: r.cT
 				});
 		}
 	});
@@ -6369,11 +6369,11 @@ var $elm$http$Http$subscription = _Platform_leaf('Http');
 var $elm$http$Http$request = function (r) {
 	return $elm$http$Http$command(
 		$elm$http$Http$Request(
-			{ck: false, bh: r.bh, cr: r.cr, cu: r.cu, cD: r.cD, cS: r.cS, ca: r.ca, cU: r.cU}));
+			{ck: false, bh: r.bh, cr: r.cr, cu: r.cu, cD: r.cD, cR: r.cR, ca: r.ca, cT: r.cT}));
 };
 var $elm$http$Http$get = function (r) {
 	return $elm$http$Http$request(
-		{bh: $elm$http$Http$emptyBody, cr: r.cr, cu: _List_Nil, cD: 'GET', cS: $elm$core$Maybe$Nothing, ca: $elm$core$Maybe$Nothing, cU: r.cU});
+		{bh: $elm$http$Http$emptyBody, cr: r.cr, cu: _List_Nil, cD: 'GET', cR: $elm$core$Maybe$Nothing, ca: $elm$core$Maybe$Nothing, cT: r.cT});
 };
 var $elm$json$Json$Decode$list = _Json_decodeList;
 var $author$project$Main$Post = F4(
@@ -6398,12 +6398,12 @@ var $author$project$Main$init = function (_v0) {
 		$elm$http$Http$get(
 			{
 				cr: A2($elm$http$Http$expectJson, $author$project$Main$GotData, $author$project$Main$postsDecoder),
-				cU: $author$project$Main$contentFile
+				cT: $author$project$Main$contentFile
 			}));
 };
 var $elm$core$Platform$Sub$batch = _Platform_batch;
 var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
-var $author$project$Main$subscriptions = function (model) {
+var $author$project$Main$subscriptions = function (_v0) {
 	return $elm$core$Platform$Sub$none;
 };
 var $author$project$Main$Failure = function (a) {
@@ -6414,23 +6414,30 @@ var $author$project$Main$Success = function (a) {
 };
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
+var $elm$json$Json$Encode$string = _Json_wrap;
+var $author$project$Main$sendMessage = _Platform_outgoingPort('sendMessage', $elm$json$Json$Encode$string);
 var $author$project$Main$update = F2(
 	function (msg, model) {
-		if (!msg.$) {
-			var result = msg.a;
-			if (!result.$) {
-				var data = result.a;
+		switch (msg.$) {
+			case 0:
+				var result = msg.a;
+				if (!result.$) {
+					var data = result.a;
+					return _Utils_Tuple2(
+						$author$project$Main$Success(data),
+						$author$project$Main$sendMessage('RENDER'));
+				} else {
+					var errMsg = result.a;
+					return _Utils_Tuple2(
+						$author$project$Main$Failure(errMsg),
+						$elm$core$Platform$Cmd$none);
+				}
+			case 1:
+				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+			default:
 				return _Utils_Tuple2(
-					$author$project$Main$Success(data),
-					$elm$core$Platform$Cmd$none);
-			} else {
-				var errMsg = result.a;
-				return _Utils_Tuple2(
-					$author$project$Main$Failure(errMsg),
-					$elm$core$Platform$Cmd$none);
-			}
-		} else {
-			return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+					model,
+					$author$project$Main$sendMessage(''));
 		}
 	});
 var $elm$html$Html$div = _VirtualDom_node('div');
@@ -6454,11 +6461,10 @@ var $author$project$Main$handleJsonError = function (msg) {
 			return $elm$html$Html$text('There was an unchecked error while loading the JSON file. No error message is possible at the moment.');
 	}
 };
-var $jxxcarlson$elm_markdown$Markdown$Option$ExtendedMath = 2;
+var $jxxcarlson$elm_markdown$Markdown$Option$Extended = 1;
 var $author$project$Main$MarkdownMsg = function (a) {
 	return {$: 1, a: a};
 };
-var $elm$json$Json$Encode$string = _Json_wrap;
 var $elm$html$Html$Attributes$stringProperty = F2(
 	function (key, string) {
 		return A2(
@@ -6743,7 +6749,7 @@ var $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$Theme$Monokai$theme = {
 				$pablohirafuji$elm_syntax_highlight$SyntaxHighlight$Style$textColor(
 					$pablohirafuji$elm_syntax_highlight$SyntaxHighlight$Style$Hex('#f92672'))))
 		]),
-	cL: $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$Theme$Monokai$requiredStyles
+	cK: $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$Theme$Monokai$requiredStyles
 };
 var $elm$core$Tuple$mapFirst = F2(
 	function (func, _v0) {
@@ -7053,7 +7059,7 @@ var $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$Style$toCss = function (
 		A2($elm$core$List$map, $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$Style$toCssClass, classes));
 };
 var $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$Theme$Type$toCss = function (_v0) {
-	var requiredStyles = _v0.cL;
+	var requiredStyles = _v0.cK;
 	var customStyles = _v0.co;
 	return $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$Style$toCss(
 		_Utils_ap(
@@ -7151,17 +7157,17 @@ var $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$Line$Helpers$toFragment 
 		var text = _v0.b;
 		switch (syntax.$) {
 			case 0:
-				return {ci: '', cK: 0, aZ: text};
+				return {ci: '', cJ: 0, aZ: text};
 			case 1:
-				return {ci: '', cK: 1, aZ: text};
+				return {ci: '', cJ: 1, aZ: text};
 			case 2:
-				return {ci: '', cK: 0, aZ: text};
+				return {ci: '', cJ: 0, aZ: text};
 			default:
 				var c = syntax.a;
 				var _v2 = toStyle(c);
 				var requiredStyle = _v2.a;
 				var additionalClass = _v2.b;
-				return {ci: additionalClass, cK: requiredStyle, aZ: text};
+				return {ci: additionalClass, cJ: requiredStyle, aZ: text};
 		}
 	});
 var $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$Line$Helpers$toLinesHelp = F3(
@@ -15689,7 +15695,7 @@ var $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$View$requiredStyleToStri
 };
 var $pablohirafuji$elm_syntax_highlight$SyntaxHighlight$View$fragmentView = function (_v0) {
 	var text = _v0.aZ;
-	var requiredStyle = _v0.cK;
+	var requiredStyle = _v0.cJ;
 	var additionalClass = _v0.ci;
 	return ((!requiredStyle) && $elm$core$String$isEmpty(additionalClass)) ? $elm$html$Html$text(text) : A2(
 		$elm$html$Html$span,
@@ -18701,7 +18707,7 @@ var $author$project$Main$printPost = function (post) {
 								A2(
 								$elm$html$Html$map,
 								$author$project$Main$MarkdownMsg,
-								A2($jxxcarlson$elm_markdown$Markdown$Render$toHtml, 2, post.bh))
+								A2($jxxcarlson$elm_markdown$Markdown$Render$toHtml, 1, post.bh))
 							]))
 					]))
 			]));
@@ -18718,10 +18724,16 @@ var $author$project$Main$view = function (model) {
 			return A2(
 				$elm$html$Html$div,
 				_List_Nil,
-				A2($elm$core$List$map, $author$project$Main$printPost, data));
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$div,
+						_List_Nil,
+						A2($elm$core$List$map, $author$project$Main$printPost, data))
+					]));
 	}
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
-	{cz: $author$project$Main$init, cR: $author$project$Main$subscriptions, cT: $author$project$Main$update, cV: $author$project$Main$view});
+	{cz: $author$project$Main$init, cQ: $author$project$Main$subscriptions, cS: $author$project$Main$update, cU: $author$project$Main$view});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	$elm$json$Json$Decode$succeed(0))(0)}});}(this));

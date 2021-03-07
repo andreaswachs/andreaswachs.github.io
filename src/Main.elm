@@ -1,12 +1,15 @@
-module Main exposing (main)
+port module Main exposing (main)
 
 import Browser
 import Html exposing (..)
-import Html.Attributes exposing (id, class)
+import Html.Attributes exposing (class, property)
 import Http
-import Json.Decode exposing (list, field)
+import Json.Decode exposing (list, field, string)
 import Markdown.Option exposing (..)
 import Markdown.Render exposing (MarkdownMsg(..), MarkdownOutput(..))
+import Html.Attributes exposing (attribute)
+import Html.Events exposing (on)
+import Html.Events exposing (onClick)
 
 -- type aliases 
 -- content data 
@@ -16,9 +19,6 @@ type alias Post =
     , title: String
     , body: String
     }
-
-type alias Posts = 
-    { posts: List Post }
 
 main : Program () Model Msg
 main =
@@ -30,6 +30,9 @@ main =
         view = view
     }
 
+
+port sendMessage : String -> Cmd msg
+
 -- model
 type Model = Failure Http.Error | Loading | Success (List Post)
 
@@ -37,11 +40,11 @@ init : () -> (Model, Cmd Msg)
 init _ = (Loading, Http.get { url = contentFile, expect = Http.expectJson GotData postsDecoder })
 
 
-
 -- Update
 type Msg =
     GotData (Result Http.Error (List Post))
     | MarkdownMsg Markdown.Render.MarkdownMsg
+    | Send
 
 
 update : Msg -> Model -> (Model, Cmd Msg)
@@ -49,18 +52,19 @@ update msg model =
     case msg of
        GotData result ->
             case result of 
-                Ok data -> (Success data, Cmd.none)
+                Ok data -> (Success data, sendMessage "RENDER")
                 Err errMsg -> (Failure errMsg, Cmd.none)
        MarkdownMsg _ -> (model, Cmd.none)
+       Send -> (model, sendMessage "")
 
 
--- Subscriptions
+-- Subscriptionse
 subscriptions : Model -> Sub Msg
-subscriptions model = Sub.none
+subscriptions _ = Sub.none
 
 
 
--- View : Model -> Html Msg
+view : Model -> Html Msg
 view model = case model of
                     Failure msg -> 
                         handleJsonError msg
@@ -69,8 +73,8 @@ view model = case model of
                         text "Loading.."
                    
                     Success data -> 
-                        div [] (List.map printPost data)
-
+                            div [] 
+                                [ div [] (List.map printPost data) ]
 
 printPost : Post -> Html Msg
 printPost post = 
@@ -81,11 +85,14 @@ printPost post =
               [ span [] [ text <| "Posted on: " ++ post.date]]
         , div [ class "post-body"] [ 
                 p [ class "fs-5 lh-base"] 
-                    [ Markdown.Render.toHtml ExtendedMath post.body |> 
+                    [ Markdown.Render.toHtml Extended post.body |> 
                                     Html.map MarkdownMsg ]]]
  
+postsDecoder : Json.Decode.Decoder (List Post)
 postsDecoder = 
     list postDecoder
+
+postDecoder : Json.Decode.Decoder Post
 postDecoder =
     Json.Decode.map4
         Post
@@ -98,7 +105,7 @@ baseUrl : String
 baseUrl = "./"
 
 dataDir : String
-dataDir = baseUrl ++ "data/"
+dataDir = baseUrl ++ "assets/data/"
 
 contentFile : String
 contentFile = dataDir ++ "content.json"
