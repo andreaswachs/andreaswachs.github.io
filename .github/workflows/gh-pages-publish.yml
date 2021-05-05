@@ -5,6 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Build Vue
     steps:
+
     - uses: actions/checkout@v2
     - id: Build-Vue
       uses: xRealNeon/VuePagesAction@1.0.0
@@ -12,3 +13,4 @@ jobs:
         username: 'andreaswachs'
         reponame: 'andreaswachs.github.io'
         token: ${{ secrets.GITHUB_TOKEN }} # Leave this line unchanged
+    - run: cp dist/index.html dist/404.html    
