@@ -1,0 +1,13 @@
+[{
+        "id": 1,
+        "date": "2020-03-01",
+        "title": "Working on my personal website",
+        "file": "url"
+    },
+    {
+        "id": 2,
+        "date": "2020-04-01",
+        "title": "Another post, which is also very interesting",
+        "file": "url"
+    }
+]
