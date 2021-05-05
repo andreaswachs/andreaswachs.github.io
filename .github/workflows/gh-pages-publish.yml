@@ -12,5 +12,4 @@ jobs:
       with:
         username: 'andreaswachs'
         reponame: 'andreaswachs.github.io'
-        token: ${{ secrets.GITHUB_TOKEN }} # Leave this line unchanged
-    - run: cp index.html 404.html    
+        token: ${{ secrets.GITHUB_TOKEN }} # Leave this line unchanged  
