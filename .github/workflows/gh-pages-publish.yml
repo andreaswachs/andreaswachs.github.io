@@ -13,3 +13,10 @@ jobs:
         username: 'andreaswachs'
         reponame: 'andreaswachs.github.io'
         token: ${{ secrets.GITHUB_TOKEN }} # Leave this line unchanged  
+        
+  rename_event:
+    runs-on: ubuntu-latest
+    name: Publish Image  
+    steps:
+    - if: github.ref == 'refs/heads/gh-pages'
+      run: cp index.html 404.html
