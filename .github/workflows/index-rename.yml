@@ -15,11 +15,14 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-
-  rename_event:
+  copy:
+    name: Make copy
     runs-on: ubuntu-latest
-    name: Publish Image  
+    if: github.ref == 'refs/heads/gh-pages'
     steps:
-    - if: github.ref == 'refs/heads/gh-pages'
-      run: cp index.html 404.html
-
+    - uses: actions/checkout@master
+    - name: copy file
+      uses: canastro/copy-file-action@master
+      with:
+        source: "index.html"
+        target: "404.html"
