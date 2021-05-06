@@ -5,17 +5,27 @@
   <div v-else class="post">
     <div class="header">
       <div class="title">
-        <h3>{{ post.title }}</h3>
+          <div class="hide-on-med-and-down show-on-medium">
+            <h3>{{ post.title }}</h3>
+          </div>
+          <div class="hide-on-med-and-up">
+            <h5>{{ post.title }}</h5>
+          </div>
       </div>
       <div class="date">
-        <p class="flow-text blue-grey-text text-lighten-1">
-          Posted on {{ post.date }}
-        </p>
+         <div class="hide-on-med-and-down show-on-medium">
+            <p class="flow-text blue-grey-text text-lighten-1">
+              Posted on {{ post.date }}
+            </p>
+          </div>
+          <div class="hide-on-med-and-up">
+            <p class="blue-grey-text text-lighten-1 smaller-text">
+              Posted on {{ post.date }}
+            </p>
+          </div>
       </div>
     </div>
-    <div class="body">
-      <span v-html="body"></span>
-    </div>
+    <div class="body" v-html="body"></div>
   </div>
 </template>
 
@@ -104,5 +114,9 @@ div.title {
 
 div.date {
   font-weight: 200;
+}
+
+.smaller-text {
+  font-size: 0.9rem;
 }
 </style>
