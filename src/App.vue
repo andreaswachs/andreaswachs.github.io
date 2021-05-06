@@ -70,4 +70,8 @@ export default {
 .navbar-container {
   margin-top: -20px;
 }
+
+body {
+  font-size: 1.3rem;
+}
 </style>
