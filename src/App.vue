@@ -74,4 +74,7 @@ export default {
 body {
   font-size: 1.3rem;
 }
+ul {
+  list-style: disc inside;
+}
 </style>

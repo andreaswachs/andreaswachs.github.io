@@ -31,4 +31,8 @@ export default {
 </script>
 
 <style>
+img[src$="centered"] {
+  display:block;
+  margin: 0 auto;
+}
 </style>
