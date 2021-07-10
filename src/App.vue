@@ -20,6 +20,7 @@
           <ul>
             <li><router-link class="black-text" to="/" >Home</router-link></li>
             <li><router-link class="black-text" to="/posts">Posts</router-link></li>
+            <li><router-link class="black-text" to="/projects">Projects</router-link></li>
             <li><router-link class="black-text" to="/about">About</router-link></li>
           </ul>
         </div>
