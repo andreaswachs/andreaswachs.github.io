@@ -64,8 +64,20 @@ export default {
 .site-header {
   background-image: url(/images/pexels-chait-goli-cropped.jpg);
   background-size: cover;
-  min-height: 160px;
+  min-height: 300px;
   border: none;
+}
+
+@media only screen and (max-width: 1280) {
+  .site-header {
+    min-height: 200px;
+  }
+}
+
+@media only screen and (max-width: 768) {
+  .site-header {
+    min-height: 160px;
+  }
 }
 
 .navbar-container {
