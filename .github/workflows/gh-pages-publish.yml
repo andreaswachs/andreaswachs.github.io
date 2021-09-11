@@ -15,4 +15,8 @@ jobs:
       with:
         username: 'andreaswachs'
         reponame: 'andreaswachs.github.io'
+        gitemail: 'andreas@wachs.dk'
+        gitname: 'andreaswachs'
+        gitmsg: 'Deploy Pages app'
         token: ${{ secrets.GITHUB_TOKEN }}
+
