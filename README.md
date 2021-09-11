@@ -1,5 +1,7 @@
 # personal-site
 
+:)
+
 ## Project setup
 ```
 npm install
