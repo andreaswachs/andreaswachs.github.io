@@ -2,7 +2,7 @@ name: Build and Publish Vue site
 
 on:
   push:
-    branches: [ main ]
+    branches: [ trunk ]
 
 jobs:
   build_vue:
