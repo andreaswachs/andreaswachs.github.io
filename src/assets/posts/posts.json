@@ -1,14 +1,14 @@
 [{
         "id": 1,
         "date": "9th of May 2021",
-        "datec": "2020-05-09",
+        "datec": "2021-05-09",
         "title": "Implementing the Sieve of Eratosthenes in Elixir",
         "file": "url"
     },
     {
         "id": 2,
-        "date": "...",
-        "datec": "...",
+        "date": "11th of September 2021",
+        "datec": "2021-09-11",
         "title": "Creating a number guesser in Haskell using a FSA and binary search",
         "file": "url"
     }
