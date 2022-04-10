@@ -1,0 +1,62 @@
+{{- if or (eq site.Params.math.enable true) (eq .Params.math true) -}}
+  {{- $use := "katex" -}}
+
+  {{- with site.Params.math -}}
+    {{- if and (isset . "use") (eq (.use | lower) "mathjax") -}}
+      {{- $use = "mathjax" -}}
+
+
+    {{- end -}}
+
+
+  {{- end -}}
+
+  {{- if eq $use "mathjax" -}}
+    {{- $url := "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS-MML_HTMLorMML" -}}
+    {{- $hash := "sha384-e/4/LvThKH1gwzXhdbY2AsjR3rm7LHWyhIG5C0jiRfn8AN2eTN5ILeztWw0H9jmN" -}}
+    <script defer type="text/javascript" src="{{- $url -}}" integrity="{{- $hash -}}" crossorigin="anonymous"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+    </script>
+
+  {{- else -}}
+    {{- $url := "https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css" -}}
+    {{- $hash := "sha384-KiWOvVjnN8qwAZbuQyWDIbfCLFhLXNETzBQjA/92pIowpC0d2O3nppDGQVgwd2nB" -}}
+    <link rel="stylesheet" href="{{- $url -}}" integrity="{{- $hash -}}" crossorigin="anonymous" />
+
+    {{- $url := "https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js" -}}
+    {{- $hash := "sha384-0fdwu/T/EQMsQlrHCCHoH10pkPLlKA1jL5dFyUOvB3lfeT2540/2g6YgSi2BL14p" -}}
+    <script defer src="{{- $url -}}" integrity="{{- $hash -}}" crossorigin="anonymous"></script>
+
+    {{- $url := "https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/contrib/auto-render.min.js" -}}
+    {{- $hash := "sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" -}}
+    <script
+      defer
+      src="{{- $url -}}"
+      integrity="{{- $hash -}}"
+      crossorigin="anonymous"
+      onload="renderMathInElement(document.body);"
+    ></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+          renderMathInElement(document.body, {
+            // customised options
+            // • auto-render specific keys, e.g.:
+            delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '$', right: '$', display: false},
+                {left: '\\(', right: '\\)', display: false},
+                {left: '\\[', right: '\\]', display: true}
+            ],
+            // • rendering keys, e.g.:
+            throwOnError : false
+          });
+      });
+  </script>
+  
+
+  {{- end -}}
+
+
+{{- end -}}
